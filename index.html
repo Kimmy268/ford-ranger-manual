@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ford Ranger Technical Manuals Portal</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background: #0d0f12; /* deep charcoal */
+    color: #e6e6e6; /* soft white */
+  }
+
+  h1 {
+    color: #4da3ff; /* neon Ford blue */
+    text-shadow: 0 0 8px #1a73e8;
+    margin-bottom: 25px;
+  }
+
+  h2 {
+    color: #7bbcff;
+    cursor: pointer;
+    margin-top: 25px;
+    padding: 10px 15px;
+    background: #1a1d22;
+    border-left: 4px solid #4da3ff;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  h2:hover {
+    background: #23272e;
+  }
+
+  h3 {
+    margin-top: 15px;
+    font-size: 15px;
+    color: #9ec9ff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  a {
+    display: block;
+    margin: 4px 0;
+    color: #b8d7ff;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 3px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  a:hover {
+    background: #1f2630;
+    color: #ffffff;
+    text-shadow: 0 0 6px #4da3ff;
+  }
+
+  .section {
+    margin-bottom: 25px;
+    background: #14171c;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #1f242b;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  }
+
+  .content {
+    display: none;
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 1px solid #2a2f38;
+  }
+
+  #searchBox {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 25px;
+    border: 1px solid #2a2f38;
+    border-radius: 5px;
+    background: #1a1d22;
+    color: #e6e6e6;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+  }
+
+  #searchBox:focus {
+    outline: none;
+    border-color: #4da3ff;
+    box-shadow: 0 0 8px #1a73e8;
+  }
+
+  #backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 0 10px #1a73e8;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  #backToTop:hover {
+    background: #4da3ff;
+    box-shadow: 0 0 14px #4da3ff;
+  }
+</style>
+</head>
+<body>
+  <h1>Ford Ranger Technical Manuals</h1>
+  <input type="text" id="searchBox" placeholder="Search manuals, systems, or wiring...">
+
+  <!-- MAIN SERVICE MANUAL SECTIONS -->
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 00 – General Information</h2>
+    <div class="content">
+      <a href="Section 00 - General Information.pdf">
+        00 – General Information (Global / Development)
+      </a>
+      <a href="Section 00.1 - General Information.pdf">
+        00.1 – General Information (Workshop / Procedures)
+      </a>
+      <a href="Section 00.2 - General Information.pdf">
+        00.2 – General Information (Australia / Export – PDI, Towing, Jacking)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 01 – Engine</h2>
+    <div class="content">
+      <a href="Section 01 - Engine.pdf">
+        01 – Engine (Full Systems Edition – Global/Export)
+      </a>
+      <a href="Section 01.1 - Engine.pdf">
+        01.1 – Engine (Workshop Mechanical Procedures – Data & Tools)
+      </a>
+      <a href="Section 01.2 - Engine.pdf">
+        01.2 – Engine (Troubleshooting + Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 02 – Suspension</h2>
+    <div class="content">
+      <a href="Section 02 - Suspension.pdf">
+        02 – Suspension (Base/Global Edition)
+      </a>
+      <a href="Section 02.1 - Suspension.pdf">
+        02.1 – Suspension (Workshop Edition – Procedures, Data & Tools)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 03 – Driveline & Axle</h2>
+    <div class="content">
+      <a href="Section 03 - Driveline and Axle.pdf">
+        03 – Driveline & Axle (Base/Global Edition)
+      </a>
+      <a href="Section 03.1 - Driveline and Axle.pdf">
+        03.1 – Driveline & Axle (Workshop Edition – Data & Tools)
+      </a>
+      <a href="Section 03.2 - Driveline and Axle.pdf">
+        03.2 – Driveline & Axle (Troubleshooting + Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 04 – Brakes</h2>
+    <div class="content">
+      <a href="Section 04 - Brakes.pdf">
+        04 – Brakes (Base/Global Edition)
+      </a>
+      <a href="Section 04.2 - Brakes.pdf">
+        04.2 – Brakes (Troubleshooting + Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 05 – Transmission & Transaxle</h2>
+    <div class="content">
+      <a href="Section 05 - Transmission and Transaxle.pdf">
+        05 – Transmission (Manual – Base/Global Edition)
+      </a>
+      <a href="Section 05.1 - Transmission and Transaxle.pdf">
+        05.1 – Transmission (Manual – Workshop Edition – Data & Tools)
+      </a>
+      <a href="Section 05.2 - Transmission and Transaxle.pdf">
+        05.2 – Transmission (Automatic – Troubleshooting + Full Edition)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 06 – Steering</h2>
+    <div class="content">
+      <a href="Section 06 - Steering.pdf">
+        06 – Steering (Base/Global Edition)
+      </a>
+      <a href="Section 06.2 - Steering.pdf">
+        06.2 – Steering (Troubleshooting + Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 07 – HVAC</h2>
+    <div class="content">
+      <a href="Section 07 - Heater, Ventilation and Airconditioning (HVAC).pdf">
+        07 – HVAC (Base/Global Edition)
+      </a>
+      <a href="Section 07.2 - Heater, Ventilation and Airconditioning (HVAC).pdf">
+        07.2 – HVAC (Troubleshooting + Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 08 – Restraints</h2>
+    <div class="content">
+      <a href="Section 08 - Restraints.pdf">
+        08 – Restraints (Base/Global Edition)
+      </a>
+      <a href="Section 08.2 - Restraints.pdf">
+        08.2 – Restraints (Troubleshooting + Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section 09 – Body & Accessories</h2>
+    <div class="content">
+      <a href="Section 09 - Body and Accessories.pdf">
+        09 – Body & Accessories (Base/Global Edition)
+      </a>
+      <a href="Section 09.2 - Body and Accessories.pdf">
+        09.2 – Body & Accessories (Troubleshooting + Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Section AI – Alphabetical Index</h2>
+    <div class="content">
+      <a href="Section AI - Alphabetical Index.pdf">
+        AI – Alphabetical Index (Base/Global Edition)
+      </a>
+      <a href="Section AI.2 - Alphabetical Index.pdf">
+        AI.2 – Alphabetical Index (Full Edition – Australia/Export)
+      </a>
+    </div>
+  </div>
+
+  <!-- WIRING DIAGRAMS -->
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Wiring Diagrams Manual</h2>
+    <div class="content">
+      <a href="Wiring Diagrams Manual.pdf">
+        Wiring Diagrams Manual (Full Book)
+      </a>
+
+      <h3>System-Specific Wiring Diagrams</h3>
+      <a href="Wiring Diagrams Manual [119].pdf">[119] – Engine / Starting System</a>
+      <a href="Wiring Diagrams Manual [140].pdf">[140] – Engine / Control System</a>
+      <a href="Wiring Diagrams Manual [318].pdf">[318] – Driveline & Axle / 4WD</a>
+      <a href="Wiring Diagrams Manual [413].pdf">[413] – Brakes / ABS</a>
+      <a href="Wiring Diagrams Manual [513].pdf">[513] – Transmission / Automatic</a>
+      <a href="Wiring Diagrams Manual [740].pdf">[740] – HVAC / Control System</a>
+      <a href="Wiring Diagrams Manual [810].pdf">[810] – Restraints / Airbag</a>
+      <a href="Wiring Diagrams Manual [912].pdf">[912] – Body / Glass & Mirrors</a>
+      <a href="Wiring Diagrams Manual [914].pdf">[914] – Body / Security & Locks</a>
+      <a href="Wiring Diagrams Manual [918].pdf">[918] – Body / Lighting Systems</a>
+      <a href="Wiring Diagrams Manual [919].pdf">[919] – Body / Wiper & Washer</a>
+      <a href="Wiring Diagrams Manual [920].pdf">[920] – Body / Entertainment</a>
+      <a href="Wiring Diagrams Manual [922].pdf">[922] – Body / Instrumentation & Driver Info</a>
+
+      <h3>Reference & Foundation Documents</h3>
+      <a href="Wiring Diagrams Manual [R].pdf">[R] – System Index & General Information</a>
+      <a href="Wiring Diagrams Manual [P].pdf">[P] – Electrical System General Procedures</a>
+      <a href="Wiring Diagrams Manual [E].pdf">[E] – Electrical Wiring Schematic</a>
+      <a href="Wiring Diagrams Manual [F].pdf">[F] – Fuse Box</a>
+      <a href="Wiring Diagrams Manual [C].pdf">[C] – Common Connector List</a>
+      <a href="Wiring Diagrams Manual [G].pdf">[G] – Ground Points</a>
+      <a href="Wiring Diagrams Manual [D].pdf">[D] – Data Link Connector</a>
+      <a href="Wiring Diagrams Manual [AI].pdf">[AI] – Alphabetical Index (Wiring)</a>
+    </div>
+  </div>
+
+  <!-- SUPPLEMENTARY DOCUMENTS -->
+
+  <div class="section">
+    <h2 onclick="toggleSection(this)">Supplementary Documents</h2>
+    <div class="content">
+      <a href="Section G17608en - Steering Column.pdf">
+        Steering Column Supplement (G17608en)
+      </a>
+    </div>
+  </div>
+
+  <button id="backToTop" onclick="scrollToTop()">Back to top</button>
+
+<script>
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  content.style.display = content.style.display === "block" ? "none" : "block";
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('searchBox').addEventListener('input', function() {
+  const query = this.value.toLowerCase();
+  const sections = document.querySelectorAll('.section');
+
+  sections.forEach(section => {
+    const content = section.querySelector('.content');
+    const links = content.querySelectorAll('a');
+    let anyMatch = false;
+
+    links.forEach(link => {
+      const text = link.textContent.toLowerCase();
+      const match = text.includes(query);
+      link.style.display = match || query === '' ? 'block' : 'none';
+      if (match) anyMatch = true;
+    });
+
+    content.style.display = anyMatch || query === '' ? 'block' : 'none';
+  });
+});
+</script>
+</body>
+</html>
