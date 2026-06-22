@@ -2,347 +2,954 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ford Ranger Technical Manuals Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ford Ranger Technical Manuals</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
 <style>
-  /* GLOBAL */
+:root {
+  --ford-blue: #003478;
+  --ranger-orange: #E35205;
+  --bg-light: #f8fafc;
+  --bg-dark: #0f172a;
+  --card-light: #ffffff;
+  --card-dark: #1e293b;
+  --text-light: #1e293b;
+  --text-dark: #f1f5f9;
+  --border-light: #e2e8f0;
+  --border-dark: #334155;
+  --tap-target: 48px;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: background 0.3s ease, color 0.3s ease;
+  padding-bottom: 80px;
+  min-height: 100vh;
+}
+
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+h1, h2, h3, h4, .font-condensed {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.tap-target {
+  min-height: var(--tap-target);
+  min-width: var(--tap-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background: var(--card-light);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.dark .card {
+  background: var(--card-dark);
+  border-color: var(--border-dark);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 2px solid var(--border-light);
+  border-radius: 8px;
+  font-weight: 600;
+  min-height: var(--tap-target);
+  padding: 0 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.dark .btn-ghost {
+  border-color: var(--border-dark);
+}
+
+.btn-ghost:active {
+  transform: scale(0.96);
+  background: rgba(0, 52, 120, 0.1);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.accordion-content.open {
+  max-height: 2000px;
+}
+
+.section-header {
+  background: linear-gradient(135deg, var(--ford-blue) 0%, #0057b8 100%);
+}
+
+.dark .section-header {
+  background: linear-gradient(135deg, #001e3c 0%, var(--ford-blue) 100%);
+}
+
+.badge {
+  background: var(--ford-blue);
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+.dark .badge {
+  background: var(--ranger-orange);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--ford-blue);
+  box-shadow: 0 0 0 3px rgba(0, 52, 120, 0.1);
+}
+
+.dark .search-input:focus {
+  border-color: var(--ranger-orange);
+  box-shadow: 0 0 0 3px rgba(227, 82, 5, 0.1);
+}
+
+.filter-chip {
+  background: var(--bg-light);
+  border: 2px solid var(--border-light);
+  border-radius: 100px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.dark .filter-chip {
+  background: var(--card-dark);
+  border-color: var(--border-dark);
+}
+
+.filter-chip.active {
+  background: var(--ford-blue);
+  border-color: var(--ford-blue);
+  color: white;
+}
+
+.dark .filter-chip.active {
+  background: var(--ranger-orange);
+  border-color: var(--ranger-orange);
+}
+
+.tile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-light);
+  background: var(--card-light);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.dark .tile-link {
+  border-color: var(--border-dark);
+  background: var(--card-dark);
+}
+
+.tile-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.dark .tile-link:hover {
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.6);
+}
+
+.tile-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 52, 120, 0.08);
+  color: var(--ford-blue);
+}
+
+.dark .tile-icon {
+  background: rgba(227, 82, 5, 0.12);
+  color: var(--ranger-orange);
+}
+
+.tile-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.tile-sub {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.section-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(0, 52, 120, 0.08);
+  color: var(--ford-blue);
+}
+
+.dark .section-pill {
+  background: rgba(227, 82, 5, 0.12);
+  color: var(--ranger-orange);
+}
+
+@media (min-width: 768px) {
   body {
-    font-family: Inter, Arial, sans-serif;
-    margin: 0;
-    background: linear-gradient(to bottom, #0a0c10, #0d0f12 60%, #0a0c10);
-    color: #e6e6e6;
+    padding-bottom: 0;
   }
-
-  h1 {
-    color: #ffffff;
-    font-weight: 700;
-    text-align: center;
-    margin: 25px 0 10px;
-    letter-spacing: -0.5px;
-  }
-
-  /* SEARCH BAR */
-  #searchBox {
-    width: 90%;
-    max-width: 600px;
-    display: block;
-    margin: 0 auto 25px;
-    padding: 12px 14px;
-    font-size: 15px;
-    border: 1px solid #1f242b;
-    border-radius: 8px;
-    background: #1a1d22;
-    color: #e6e6e6;
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-  }
-
-  #searchBox:focus {
-    outline: none;
-    border-color: #4da3ff;
-    box-shadow: 0 0 8px #1a73e8;
-  }
-
-  /* SECTION HEADERS */
-  h2 {
-    color: #7bbcff;
-    cursor: pointer;
-    margin-top: 25px;
-    padding: 12px 15px;
-    background: #11141a;
-    border-left: 4px solid #4da3ff;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: background 0.2s;
-  }
-
-  h2:hover {
-    background: #1a1d22;
-  }
-
-  /* WIRING DIVIDER */
-  .divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 30px 0 20px;
-    gap: 10px;
-  }
-
-  .divider::before,
-  .divider::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, #b91c1c, transparent);
-  }
-
-  .divider span {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border: 1px solid #b91c1c;
-    border-radius: 9999px;
-    background: rgba(185, 28, 28, 0.15);
-    color: #f87171;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  /* TILE GRID */
-  .tile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 14px;
-    margin-top: 12px;
-  }
-
-  /* TILE */
-  .tile {
-    background: #14171c;
-    border: 1px solid #1f242b;
-    border-radius: 12px;
-    padding: 18px 12px;
-    text-decoration: none;
-    color: #b8d7ff;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .tile:hover {
-    background: #1c1f25;
-    border-color: #4da3ff;
-    color: #ffffff;
-    box-shadow: 0 0 10px rgba(77,163,255,0.25);
-    transform: translateY(-2px);
-  }
-
-  .tile:active {
-    transform: scale(0.98);
-  }
-
-  /* ICON PLACEHOLDER */
-  .icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    background: linear-gradient(135deg, #4da3ff55, #1a73e855);
-    display: inline-block;
-  }
-
-  /* RED ICONS FOR WIRING */
-  .icon-red {
-    background: linear-gradient(135deg, #ff4d4d55, #b91c1c55);
-  }
-
-  /* SECTION CONTAINER */
-  .section {
-    margin-bottom: 25px;
-    background: #0f1217;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #1f242b;
-    box-shadow: 0 0 10px rgba(0,0,0,0.4);
-  }
-
-  .content {
-    display: none;
-    margin-top: 10px;
-  }
-
-  h3 {
-    margin-top: 20px;
-    font-size: 0.85rem;
-    color: #9ec9ff;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+}
 </style>
 </head>
-
 <body>
 
-<h1>Ford Ranger Technical Manuals</h1>
-<input type="text" id="searchBox" placeholder="Search manuals, systems, or wiring...">
-
-<!-- SECTION 00 -->
-<div class="section">
-  <h2>Section 00 – General Information</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 00 - General Information.pdf"><span class="icon"></span>00 – General Information</a>
-    <a class="tile" href="Section 00.1 - General Information.pdf"><span class="icon"></span>00.1 – General Information</a>
-    <a class="tile" href="Section 00.2 - General Information.pdf"><span class="icon"></span>00.2 – General Information</a>
-  </div>
-</div>
-
-<!-- SECTION 01 -->
-<div class="section">
-  <h2>Section 01 – Engine</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 01 - Engine.pdf"><span class="icon"></span>01 – Engine</a>
-    <a class="tile" href="Section 01.1 - Engine.pdf"><span class="icon"></span>01.1 – Engine</a>
-    <a class="tile" href="Section 01.2 - Engine.pdf"><span class="icon"></span>01.2 – Engine</a>
-  </div>
-</div>
-
-<!-- SECTION 02 -->
-<div class="section">
-  <h2>Section 02 – Suspension</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 02 - Suspension.pdf"><span class="icon"></span>02 – Suspension</a>
-    <a class="tile" href="Section 02.2 - Suspension.pdf"><span class="icon"></span>02.2 – Suspension</a>
-  </div>
-</div>
-
-<!-- SECTION 03 -->
-<div class="section">
-  <h2>Section 03 – Driveline & Axle</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 03 - Driveline and Axle.pdf"><span class="icon"></span>03 – Driveline & Axle</a>
-    <a class="tile" href="Section 03.1 - Driveline and Axle.pdf"><span class="icon"></span>03.1 – Driveline & Axle</a>
-    <a class="tile" href="Section 03.2 - Driveline and Axle.pdf"><span class="icon"></span>03.2 – Driveline & Axle</a>
-  </div>
-</div>
-
-<!-- SECTION 04 -->
-<div class="section">
-  <h2>Section 04 – Brakes</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 04 - Brakes.pdf"><span class="icon"></span>04 – Brakes</a>
-    <a class="tile" href="Section 04.2 - Brakes.pdf"><span class="icon"></span>04.2 – Brakes</a>
-  </div>
-</div>
-
-<!-- SECTION 05 -->
-<div class="section">
-  <h2>Section 05 – Transmission & Transaxle</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 05 - Transmission and Transaxle.pdf"><span class="icon"></span>05 – Transmission</a>
-    <a class="tile" href="Section 05.1 - Transmission and Transaxle.pdf"><span class="icon"></span>05.1 – Transmission</a>
-    <a class="tile" href="Section 05.2 - Transmission and Transaxle.pdf"><span class="icon"></span>05.2 – Transmission</a>
-  </div>
-</div>
-
-<!-- SECTION 06 -->
-<div class="section">
-  <h2>Section 06 – Steering</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 06 - Steering.pdf"><span class="icon"></span>06 – Steering</a>
-    <a class="tile" href="Section 06.2 - Steering.pdf"><span class="icon"></span>06.2 – Steering</a>
-  </div>
-</div>
-
-<!-- SECTION 07 -->
-<div class="section">
-  <h2>Section 07 – HVAC</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 07 - Heater, Ventilation and Airconditioning (HVAC).pdf"><span class="icon"></span>07 – HVAC</a>
-    <a class="tile" href="Section 07.2 - Heater, Ventilation and Airconditioning (HVAC).pdf"><span class="icon"></span>07.2 – HVAC</a>
-  </div>
-</div>
-
-<!-- SECTION 08 -->
-<div class="section">
-  <h2>Section 08 – Restraints</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 08 - Restraints.pdf"><span class="icon"></span>08 – Restraints</a>
-    <a class="tile" href="Section 08.2 - Restraints.pdf"><span class="icon"></span>08.2 – Restraints</a>
-  </div>
-</div>
-
-<!-- SECTION 09 -->
-<div class="section">
-  <h2>Section 09 – Body & Accessories</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section 09 - Body and Accessories.pdf"><span class="icon"></span>09 – Body & Accessories</a>
-    <a class="tile" href="Section 09.2 - Body and Accessories.pdf"><span class="icon"></span>09.2 – Body & Accessories</a>
-  </div>
-</div>
-
-<!-- SECTION AI -->
-<div class="section">
-  <h2>Section AI – Alphabetical Index</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section AI - Alphabetical Index.pdf"><span class="icon"></span>AI – Alphabetical Index</a>
-    <a class="tile" href="Section AI.2 - Alphabetical Index.pdf"><span class="icon"></span>AI.2 – Alphabetical Index</a>
-  </div>
-</div>
-
-<!-- WIRING DIVIDER -->
-<div class="divider">
-  <span>⚡ Wiring Manual</span>
-</div>
-
-<!-- WIRING -->
-<div class="section">
-  <h2>Wiring Diagrams Manual</h2>
-  <div class="content">
-
-    <div class="tile-grid">
-      <a class="tile" href="Wiring Diagrams Manual.pdf"><span class="icon-red"></span>Full Wiring Manual</a>
-    </div>
-
-    <h3>System-Specific Wiring</h3>
-    <div class="tile-grid">
-      <a class="tile" href="Wiring Diagrams Manual [119].pdf"><span class="icon-red"></span>[119] Engine / Starting</a>
-      <a class="tile" href="Wiring Diagrams Manual [140].pdf"><span class="icon-red"></span>[140] Engine / Control</a>
-      <a class="tile" href="Wiring Diagrams Manual [318].pdf"><span class="icon-red"></span>[318] Driveline / 4WD</a>
-      <a class="tile" href="Wiring Diagrams Manual [413].pdf"><span class="icon-red"></span>[413] Brakes / ABS</a>
-      <a class="tile" href="Wiring Diagrams Manual [513].pdf"><span class="icon-red"></span>[513] Transmission / Auto</a>
-      <a class="tile" href="Wiring Diagrams Manual [740].pdf"><span class="icon-red"></span>[740] HVAC</a>
-      <a class="tile" href="Wiring Diagrams Manual [810].pdf"><span class="icon-red"></span>[810] Airbag</a>
-      <a class="tile" href="Wiring Diagrams Manual [912].pdf"><span class="icon-red"></span>[912] Glass & Mirrors</a>
-      <a class="tile" href="Wiring Diagrams Manual [914].pdf"><span class="icon-red"></span>[914] Security & Locks</a>
-      <a class="tile" href="Wiring Diagrams Manual [918].pdf"><span class="icon-red"></span>[918] Lighting</a>
-      <a class="tile" href="Wiring Diagrams Manual [919].pdf"><span class="icon-red"></span>[919] Wipers</a>
-      <a class="tile" href="Wiring Diagrams Manual [920].pdf"><span class="icon-red"></span>[920] Entertainment</a>
-      <a class="tile" href="Wiring Diagrams Manual [922].pdf"><span class="icon-red"></span>[922] Instrumentation</a>
-    </div>
-
-    <h3>Reference Documents</h3>
-    <div class="tile-grid">
-      <a class="tile" href="Wiring Diagrams Manual [R].pdf"><span class="icon-red"></span>[R] System Index</a>
-      <a class="tile" href="Wiring Diagrams Manual [P].pdf"><span class="icon-red"></span>[P] General Procedures</a>
-      <a class="tile" href="Wiring Diagrams Manual [E].pdf"><span class="icon-red"></span>[E] Wiring Schematic</a>
-      <a class="tile" href="Wiring Diagrams Manual [F].pdf"><span class="icon-red"></span>[F] Fuse Box</a>
-      <a class="tile" href="Wiring Diagrams Manual [C].pdf"><span class="icon-red"></span>[C] Connector List</a>
-      <a class="tile" href="Wiring Diagrams Manual [G].pdf"><span class="icon-red"></span>[G] Ground Points</a>
-      <a class="tile" href="Wiring Diagrams Manual [D].pdf"><span class="icon-red"></span>[D] Data Link</a>
-      <a class="tile" href="Wiring Diagrams Manual [AI].pdf"><span class="icon-red"></span>[AI] Wiring Index</a>
+<!-- Header -->
+<header class="section-header text-white sticky top-0 z-40 shadow-lg">
+  <div class="max-w-6xl mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-white/20 p-2 rounded-lg">
+          <i data-lucide="truck" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="font-condensed font-bold text-xl leading-tight">RANGER MANUALS</h1>
+          <p class="text-xs text-white/80">Technical Portal</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="nightToggle" class="tap-target rounded-lg hover:bg-white/10 transition" aria-label="Toggle night mode">
+          <i data-lucide="moon" class="w-5 h-5"></i>
+        </button>
+      </div>
     </div>
   </div>
-</div>
+</header>
 
-<!-- SUPPLEMENTARY -->
-<div class="section">
-  <h2>Supplementary Documents</h2>
-  <div class="content tile-grid">
-    <a class="tile" href="Section G17608en - Steering Column.pdf"><span class="icon"></span>Steering Column Supplement (G17608en)</a>
+<main class="max-w-6xl mx-auto px-4 py-5">
+
+  <!-- Search -->
+  <div class="card p-4 mb-5">
+    <div class="relative">
+      <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+      <input 
+        id="quickSearch" 
+        type="text" 
+        placeholder="Search manuals, sections, or wiring..." 
+        class="search-input w-full pl-10 pr-4 py-3 rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent"
+      >
+    </div>
+    <div class="flex gap-2 mt-3 overflow-x-auto pb-1">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="service">Service Manual</button>
+      <button class="filter-chip" data-filter="wiring">Wiring</button>
+      <button class="filter-chip" data-filter="supplementary">Supplementary</button>
+    </div>
   </div>
-</div>
+
+  <!-- Service Manual Sections -->
+  <h2 class="font-condensed font-bold text-xl mb-3 flex items-center gap-2">
+    <i data-lucide="book-open" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+    SERVICE MANUAL SECTIONS
+  </h2>
+
+  <!-- Section 00 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="info" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 00 – General Information</span>
+        <span class="badge">3</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 00 - General Information.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">00</span></div>
+          <div>
+            <div class="tile-title">00 – General Information</div>
+            <div class="tile-sub">Base manual</div>
+          </div>
+        </a>
+        <a href="Section 00.1 - General Information.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">00.1</span></div>
+          <div>
+            <div class="tile-title">00.1 – General Information</div>
+            <div class="tile-sub">Supplement 1</div>
+          </div>
+        </a>
+        <a href="Section 00.2 - General Information.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">00.2</span></div>
+          <div>
+            <div class="tile-title">00.2 – General Information</div>
+            <div class="tile-sub">Supplement 2</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 01 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="cpu" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 01 – Engine</span>
+        <span class="badge">3</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 01 - Engine.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">01</span></div>
+          <div>
+            <div class="tile-title">01 – Engine</div>
+            <div class="tile-sub">Base engine manual</div>
+          </div>
+        </a>
+        <a href="Section 01.1 - Engine.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">01.1</span></div>
+          <div>
+            <div class="tile-title">01.1 – Engine</div>
+            <div class="tile-sub">Supplement 1</div>
+          </div>
+        </a>
+        <a href="Section 01.2 - Engine.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">01.2</span></div>
+          <div>
+            <div class="tile-title">01.2 – Engine</div>
+            <div class="tile-sub">Supplement 2</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 02 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="git-branch" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 02 – Suspension</span>
+        <span class="badge">2</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 02 - Suspension.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">02</span></div>
+          <div>
+            <div class="tile-title">02 – Suspension</div>
+            <div class="tile-sub">Base suspension manual</div>
+          </div>
+        </a>
+        <a href="Section 02.2 - Suspension.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">02.2</span></div>
+          <div>
+            <div class="tile-title">02.2 – Suspension</div>
+            <div class="tile-sub">Supplement</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 03 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="settings" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 03 – Driveline & Axle</span>
+        <span class="badge">3</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 03 - Driveline and Axle.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">03</span></div>
+          <div>
+            <div class="tile-title">03 – Driveline & Axle</div>
+            <div class="tile-sub">Base driveline manual</div>
+          </div>
+        </a>
+        <a href="Section 03.1 - Driveline and Axle.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">03.1</span></div>
+          <div>
+            <div class="tile-title">03.1 – Driveline & Axle</div>
+            <div class="tile-sub">Supplement 1</div>
+          </div>
+        </a>
+        <a href="Section 03.2 - Driveline and Axle.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">03.2</span></div>
+          <div>
+            <div class="tile-title">03.2 – Driveline & Axle</div>
+            <div class="tile-sub">Supplement 2</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 04 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="disc" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 04 – Brakes</span>
+        <span class="badge">2</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 04 - Brakes.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">04</span></div>
+          <div>
+            <div class="tile-title">04 – Brakes</div>
+            <div class="tile-sub">Base brakes manual</div>
+          </div>
+        </a>
+        <a href="Section 04.2 - Brakes.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">04.2</span></div>
+          <div>
+            <div class="tile-title">04.2 – Brakes</div>
+            <div class="tile-sub">Supplement</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 05 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="settings-2" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 05 – Transmission & Transaxle</span>
+        <span class="badge">3</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 05 - Transmission and Transaxle.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">05</span></div>
+          <div>
+            <div class="tile-title">05 – Transmission</div>
+            <div class="tile-sub">Base transmission manual</div>
+          </div>
+        </a>
+        <a href="Section 05.1 - Transmission and Transaxle.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">05.1</span></div>
+          <div>
+            <div class="tile-title">05.1 – Transmission</div>
+            <div class="tile-sub">Supplement 1</div>
+          </div>
+        </a>
+        <a href="Section 05.2 - Transmission and Transaxle.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">05.2</span></div>
+          <div>
+            <div class="tile-title">05.2 – Transmission</div>
+            <div class="tile-sub">Supplement 2</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 06 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="steering-wheel" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 06 – Steering</span>
+        <span class="badge">2</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 06 - Steering.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">06</span></div>
+          <div>
+            <div class="tile-title">06 – Steering</div>
+            <div class="tile-sub">Base steering manual</div>
+          </div>
+        </a>
+        <a href="Section 06.2 - Steering.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">06.2</span></div>
+          <div>
+            <div class="tile-title">06.2 – Steering</div>
+            <div class="tile-sub">Supplement</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 07 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="wind" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 07 – HVAC</span>
+        <span class="badge">2</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 07 - Heater, Ventilation and Airconditioning (HVAC).pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">07</span></div>
+          <div>
+            <div class="tile-title">07 – HVAC</div>
+            <div class="tile-sub">Base HVAC manual</div>
+          </div>
+        </a>
+        <a href="Section 07.2 - Heater, Ventilation and Airconditioning (HVAC).pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">07.2</span></div>
+          <div>
+            <div class="tile-title">07.2 – HVAC</div>
+            <div class="tile-sub">Supplement</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 08 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="shield" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 08 – Restraints</span>
+        <span class="badge">2</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 08 - Restraints.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">08</span></div>
+          <div>
+            <div class="tile-title">08 – Restraints</div>
+            <div class="tile-sub">Base restraints manual</div>
+          </div>
+        </a>
+        <a href="Section 08.2 - Restraints.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">08.2</span></div>
+          <div>
+            <div class="tile-title">08.2 – Restraints</div>
+            <div class="tile-sub">Supplement</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 09 -->
+  <section class="card mb-3 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="car" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section 09 – Body & Accessories</span>
+        <span class="badge">2</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section 09 - Body and Accessories.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">09</span></div>
+          <div>
+            <div class="tile-title">09 – Body & Accessories</div>
+            <div class="tile-sub">Base body manual</div>
+          </div>
+        </a>
+        <a href="Section 09.2 - Body and Accessories.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">09.2</span></div>
+          <div>
+            <div class="tile-title">09.2 – Body & Accessories</div>
+            <div class="tile-sub">Supplement</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section AI -->
+  <section class="card mb-6 section-card" data-category="service">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="list" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Section AI – Alphabetical Index</span>
+        <span class="badge">2</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section AI - Alphabetical Index.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">AI</span></div>
+          <div>
+            <div class="tile-title">AI – Alphabetical Index</div>
+            <div class="tile-sub">Base index</div>
+          </div>
+        </a>
+        <a href="Section AI.2 - Alphabetical Index.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">AI.2</span></div>
+          <div>
+            <div class="tile-title">AI.2 – Alphabetical Index</div>
+            <div class="tile-sub">Supplement</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wiring Manual -->
+  <h2 class="font-condensed font-bold text-xl mb-3 flex items-center gap-2">
+    <i data-lucide="zap" class="w-5 h-5 text-[#E35205]"></i>
+    WIRING DIAGRAMS
+  </h2>
+
+  <section class="card mb-6 section-card" data-category="wiring">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="zap" class="w-5 h-5 text-[#E35205]"></i>
+        <span>Wiring Diagrams Manual</span>
+        <span class="badge">1 + 21</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-4">
+        <div>
+          <div class="section-pill mb-2">
+            <i data-lucide="book" class="w-4 h-4"></i>
+            Full Book
+          </div>
+          <a href="Wiring Diagrams Manual.pdf" class="tile-link manual-tile">
+            <div class="tile-icon"><span class="font-mono text-xs">WD</span></div>
+            <div>
+              <div class="tile-title">Wiring Diagrams Manual (Full Book)</div>
+              <div class="tile-sub">All systems</div>
+            </div>
+          </a>
+        </div>
+
+        <div>
+          <div class="section-pill mb-2">
+            <i data-lucide="cpu" class="w-4 h-4"></i>
+            System-Specific Wiring
+          </div>
+          <div class="space-y-2">
+            <a href="Wiring Diagrams Manual [119].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">119</span></div>
+              <div>
+                <div class="tile-title">[119] Engine / Starting</div>
+                <div class="tile-sub">Starter & power feed</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [140].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">140</span></div>
+              <div>
+                <div class="tile-title">[140] Engine / Control</div>
+                <div class="tile-sub">ECU & sensors</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [318].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">318</span></div>
+              <div>
+                <div class="tile-title">[318] Driveline / 4WD</div>
+                <div class="tile-sub">4WD control</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [413].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">413</span></div>
+              <div>
+                <div class="tile-title">[413] Brakes / ABS</div>
+                <div class="tile-sub">ABS & sensors</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [513].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">513</span></div>
+              <div>
+                <div class="tile-title">[513] Transmission / Auto</div>
+                <div class="tile-sub">Auto trans control</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [740].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">740</span></div>
+              <div>
+                <div class="tile-title">[740] HVAC</div>
+                <div class="tile-sub">Climate control wiring</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [810].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">810</span></div>
+              <div>
+                <div class="tile-title">[810] Airbag</div>
+                <div class="tile-sub">SRS circuits</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [912].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">912</span></div>
+              <div>
+                <div class="tile-title">[912] Glass & Mirrors</div>
+                <div class="tile-sub">Windows & mirrors</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [914].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">914</span></div>
+              <div>
+                <div class="tile-title">[914] Security & Locks</div>
+                <div class="tile-sub">Locks & security</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [918].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">918</span></div>
+              <div>
+                <div class="tile-title">[918] Lighting</div>
+                <div class="tile-sub">Exterior lighting</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [919].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">919</span></div>
+              <div>
+                <div class="tile-title">[919] Wipers</div>
+                <div class="tile-sub">Wiper circuits</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [920].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">920</span></div>
+              <div>
+                <div class="tile-title">[920] Entertainment</div>
+                <div class="tile-sub">Audio & infotainment</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [922].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">922</span></div>
+              <div>
+                <div class="tile-title">[922] Instrumentation</div>
+                <div class="tile-sub">Cluster & gauges</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-pill mb-2">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            Reference Documents
+          </div>
+          <div class="space-y-2">
+            <a href="Wiring Diagrams Manual [R].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">R</span></div>
+              <div>
+                <div class="tile-title">[R] System Index</div>
+                <div class="tile-sub">System index</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [P].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">P</span></div>
+              <div>
+                <div class="tile-title">[P] General Procedures</div>
+                <div class="tile-sub">Wiring procedures</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [E].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">E</span></div>
+              <div>
+                <div class="tile-title">[E] Wiring Schematic</div>
+                <div class="tile-sub">Schematic overview</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [F].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">F</span></div>
+              <div>
+                <div class="tile-title">[F] Fuse Box</div>
+                <div class="tile-sub">Fuse & relay layout</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [C].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">C</span></div>
+              <div>
+                <div class="tile-title">[C] Connector List</div>
+                <div class="tile-sub">Connector index</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [G].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">G</span></div>
+              <div>
+                <div class="tile-title">[G] Ground Points</div>
+                <div class="tile-sub">Ground locations</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [D].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">D</span></div>
+              <div>
+                <div class="tile-title">[D] Data Link</div>
+                <div class="tile-sub">Diagnostic link</div>
+              </div>
+            </a>
+            <a href="Wiring Diagrams Manual [AI].pdf" class="tile-link manual-tile">
+              <div class="tile-icon"><span class="font-mono text-xs">AI</span></div>
+              <div>
+                <div class="tile-title">[AI] Wiring Index</div>
+                <div class="tile-sub">Alphabetical wiring index</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Supplementary -->
+  <h2 class="font-condensed font-bold text-xl mb-3 flex items-center gap-2">
+    <i data-lucide="file-plus" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+    SUPPLEMENTARY DOCUMENTS
+  </h2>
+
+  <section class="card mb-10 section-card" data-category="supplementary">
+    <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
+      <div class="flex items-center gap-3">
+        <i data-lucide="steering-wheel" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <span>Steering Column Supplement</span>
+        <span class="badge">1</span>
+      </div>
+      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    </button>
+    <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 space-y-2">
+        <a href="Section G17608en - Steering Column.pdf" class="tile-link manual-tile">
+          <div class="tile-icon"><span class="font-mono text-xs">G17608</span></div>
+          <div>
+            <div class="tile-title">Steering Column Supplement (G17608en)</div>
+            <div class="tile-sub">Additional steering column procedures</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <script>
-document.querySelectorAll("h2").forEach(header => {
-  header.addEventListener("click", () => {
-    const content = header.nextElementSibling;
-    content.style.display = content.style.display === "block" ? "none" : "block";
-  });
-});
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
 
-document.getElementById("searchBox").addEventListener("input", function() {
-  const query = this.value.toLowerCase();
-  document.querySelectorAll(".section").forEach(section => {
-    const content = section.querySelector(".content");
-    const text = section.innerText.toLowerCase();
-    content.style.display = text.includes(query) ? "block" : "none";
+  // Dark mode toggle
+  const nightToggle = document.getElementById('nightToggle');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (prefersDark) {
+    document.body.classList.add('dark');
+  }
+
+  nightToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  // Accordions
+  document.querySelectorAll('.accordion-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const content = btn.parentElement.querySelector('.accordion-content');
+      const icon = btn.querySelector('.accordion-icon');
+      const isOpen = content.classList.contains('open');
+      if (isOpen) {
+        content.classList.remove('open');
+        icon.style.transform = 'rotate(0deg)';
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        content.classList.add('open');
+        icon.style.transform = 'rotate(180deg)';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Filter chips
+  const chips = document.querySelectorAll('.filter-chip');
+  const sections = document.querySelectorAll('.section-card');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const filter = chip.getAttribute('data-filter');
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      sections.forEach(sec => {
+        const cat = sec.getAttribute('data-category');
+        if (filter === 'all' || filter === cat) {
+          sec.style.display = '';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Search
+  const searchInput = document.getElementById('quickSearch');
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase();
+    const tiles = document.querySelectorAll('.manual-tile');
+    const sectionCards = document.querySelectorAll('.section-card');
+
+    tiles.forEach(tile => {
+      const text = tile.textContent.toLowerCase();
+      tile.style.display = text.includes(q) ? 'flex' : 'none';
+    });
+
+    sectionCards.forEach(sec => {
+      const visibleTile = sec.querySelector('.manual-tile[style*="display: flex"]');
+      sec.style.display = visibleTile || q === '' ? '' : 'none';
+    });
   });
 });
 </script>
