@@ -6,8 +6,8 @@
 
 <style>
   body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
+    font-family: Inter, Arial, sans-serif;
+    margin: 20px;
     background: #0d0f12;
     color: #e6e6e6;
   }
@@ -16,17 +16,19 @@
     color: #4da3ff;
     text-shadow: 0 0 8px #1a73e8;
     margin-bottom: 25px;
+    text-align: center;
   }
 
   h2 {
     color: #7bbcff;
     cursor: pointer;
     margin-top: 25px;
-    padding: 10px 15px;
+    padding: 12px 15px;
     background: #1a1d22;
     border-left: 4px solid #4da3ff;
-    border-radius: 4px;
+    border-radius: 6px;
     transition: background 0.2s;
+    font-size: 1.2rem;
   }
 
   h2:hover {
@@ -35,27 +37,44 @@
 
   h3 {
     margin-top: 15px;
-    font-size: 15px;
+    font-size: 0.9rem;
     color: #9ec9ff;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
-  a {
-    display: block;
-    margin: 4px 0;
-    color: #b8d7ff;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 6px 10px;
-    border-radius: 3px;
-    transition: background 0.15s, color 0.15s;
+  /* TILE GRID */
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
   }
 
-  a:hover {
-    background: #1f2630;
+  .tile {
+    background: #1c1f25;
+    border: 2px solid #2a2f38;
+    padding: 18px 10px;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #b8d7ff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: 0.2s;
+    display: block;
+  }
+
+  .tile:hover {
+    background: #262c34;
+    border-color: #4da3ff;
     color: #ffffff;
+    transform: scale(1.03);
     text-shadow: 0 0 6px #4da3ff;
+  }
+
+  .tile:active {
+    transform: scale(0.97);
   }
 
   .section {
@@ -69,14 +88,12 @@
 
   .content {
     display: none;
-    margin-left: 10px;
-    padding-left: 10px;
-    border-left: 1px solid #2a2f38;
+    margin-top: 10px;
   }
 
   #searchBox {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     font-size: 16px;
     margin-bottom: 25px;
     border: 1px solid #2a2f38;
@@ -102,103 +119,103 @@
 <!-- SECTION 00 -->
 <div class="section">
   <h2>Section 00 – General Information</h2>
-  <div class="content">
-    <a href="Section 00 - General Information.pdf">00 – General Information</a>
-    <a href="Section 00.1 - General Information.pdf">00.1 – General Information</a>
-    <a href="Section 00.2 - General Information.pdf">00.2 – General Information</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 00 - General Information.pdf">00 – General Information</a>
+    <a class="tile" href="Section 00.1 - General Information.pdf">00.1 – General Information</a>
+    <a class="tile" href="Section 00.2 - General Information.pdf">00.2 – General Information</a>
   </div>
 </div>
 
 <!-- SECTION 01 -->
 <div class="section">
   <h2>Section 01 – Engine</h2>
-  <div class="content">
-    <a href="Section 01 - Engine.pdf">01 – Engine</a>
-    <a href="Section 01.1 - Engine.pdf">01.1 – Engine</a>
-    <a href="Section 01.2 - Engine.pdf">01.2 – Engine</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 01 - Engine.pdf">01 – Engine</a>
+    <a class="tile" href="Section 01.1 - Engine.pdf">01.1 – Engine</a>
+    <a class="tile" href="Section 01.2 - Engine.pdf">01.2 – Engine</a>
   </div>
 </div>
 
 <!-- SECTION 02 -->
 <div class="section">
   <h2>Section 02 – Suspension</h2>
-  <div class="content">
-    <a href="Section 02 - Suspension.pdf">02 – Suspension</a>
-    <a href="Section 02.2 - Suspension.pdf">02.2 – Suspension</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 02 - Suspension.pdf">02 – Suspension</a>
+    <a class="tile" href="Section 02.2 - Suspension.pdf">02.2 – Suspension</a>
   </div>
 </div>
 
 <!-- SECTION 03 -->
 <div class="section">
   <h2>Section 03 – Driveline & Axle</h2>
-  <div class="content">
-    <a href="Section 03 - Driveline and Axle.pdf">03 – Driveline & Axle</a>
-    <a href="Section 03.1 - Driveline and Axle.pdf">03.1 – Driveline & Axle</a>
-    <a href="Section 03.2 - Driveline and Axle.pdf">03.2 – Driveline & Axle</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 03 - Driveline and Axle.pdf">03 – Driveline & Axle</a>
+    <a class="tile" href="Section 03.1 - Driveline and Axle.pdf">03.1 – Driveline & Axle</a>
+    <a class="tile" href="Section 03.2 - Driveline and Axle.pdf">03.2 – Driveline & Axle</a>
   </div>
 </div>
 
 <!-- SECTION 04 -->
 <div class="section">
   <h2>Section 04 – Brakes</h2>
-  <div class="content">
-    <a href="Section 04 - Brakes.pdf">04 – Brakes</a>
-    <a href="Section 04.2 - Brakes.pdf">04.2 – Brakes</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 04 - Brakes.pdf">04 – Brakes</a>
+    <a class="tile" href="Section 04.2 - Brakes.pdf">04.2 – Brakes</a>
   </div>
 </div>
 
 <!-- SECTION 05 -->
 <div class="section">
   <h2>Section 05 – Transmission & Transaxle</h2>
-  <div class="content">
-    <a href="Section 05 - Transmission and Transaxle.pdf">05 – Transmission</a>
-    <a href="Section 05.1 - Transmission and Transaxle.pdf">05.1 – Transmission</a>
-    <a href="Section 05.2 - Transmission and Transaxle.pdf">05.2 – Transmission</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 05 - Transmission and Transaxle.pdf">05 – Transmission</a>
+    <a class="tile" href="Section 05.1 - Transmission and Transaxle.pdf">05.1 – Transmission</a>
+    <a class="tile" href="Section 05.2 - Transmission and Transaxle.pdf">05.2 – Transmission</a>
   </div>
 </div>
 
 <!-- SECTION 06 -->
 <div class="section">
   <h2>Section 06 – Steering</h2>
-  <div class="content">
-    <a href="Section 06 - Steering.pdf">06 – Steering</a>
-    <a href="Section 06.2 - Steering.pdf">06.2 – Steering</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 06 - Steering.pdf">06 – Steering</a>
+    <a class="tile" href="Section 06.2 - Steering.pdf">06.2 – Steering</a>
   </div>
 </div>
 
 <!-- SECTION 07 -->
 <div class="section">
   <h2>Section 07 – HVAC</h2>
-  <div class="content">
-    <a href="Section 07 - Heater, Ventilation and Airconditioning (HVAC).pdf">07 – HVAC</a>
-    <a href="Section 07.2 - Heater, Ventilation and Airconditioning (HVAC).pdf">07.2 – HVAC</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 07 - Heater, Ventilation and Airconditioning (HVAC).pdf">07 – HVAC</a>
+    <a class="tile" href="Section 07.2 - Heater, Ventilation and Airconditioning (HVAC).pdf">07.2 – HVAC</a>
   </div>
 </div>
 
 <!-- SECTION 08 -->
 <div class="section">
   <h2>Section 08 – Restraints</h2>
-  <div class="content">
-    <a href="Section 08 - Restraints.pdf">08 – Restraints</a>
-    <a href="Section 08.2 - Restraints.pdf">08.2 – Restraints</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 08 - Restraints.pdf">08 – Restraints</a>
+    <a class="tile" href="Section 08.2 - Restraints.pdf">08.2 – Restraints</a>
   </div>
 </div>
 
 <!-- SECTION 09 -->
 <div class="section">
   <h2>Section 09 – Body & Accessories</h2>
-  <div class="content">
-    <a href="Section 09 - Body and Accessories.pdf">09 – Body & Accessories</a>
-    <a href="Section 09.2 - Body and Accessories.pdf">09.2 – Body & Accessories</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section 09 - Body and Accessories.pdf">09 – Body & Accessories</a>
+    <a class="tile" href="Section 09.2 - Body and Accessories.pdf">09.2 – Body & Accessories</a>
   </div>
 </div>
 
 <!-- SECTION AI -->
 <div class="section">
   <h2>Section AI – Alphabetical Index</h2>
-  <div class="content">
-    <a href="Section AI - Alphabetical Index.pdf">AI – Alphabetical Index</a>
-    <a href="Section AI.2 - Alphabetical Index.pdf">AI.2 – Alphabetical Index</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section AI - Alphabetical Index.pdf">AI – Alphabetical Index</a>
+    <a class="tile" href="Section AI.2 - Alphabetical Index.pdf">AI.2 – Alphabetical Index</a>
   </div>
 </div>
 
@@ -206,40 +223,47 @@
 <div class="section">
   <h2>Wiring Diagrams Manual</h2>
   <div class="content">
-    <a href="Wiring Diagrams Manual.pdf">Wiring Diagrams Manual (Full Book)</a>
+
+    <div class="tile-grid">
+      <a class="tile" href="Wiring Diagrams Manual.pdf">Full Wiring Manual</a>
+    </div>
 
     <h3>System-Specific Wiring</h3>
-    <a href="Wiring Diagrams Manual [119].pdf">[119] Engine / Starting</a>
-    <a href="Wiring Diagrams Manual [140].pdf">[140] Engine / Control</a>
-    <a href="Wiring Diagrams Manual [318].pdf">[318] Driveline / 4WD</a>
-    <a href="Wiring Diagrams Manual [413].pdf">[413] Brakes / ABS</a>
-    <a href="Wiring Diagrams Manual [513].pdf">[513] Transmission / Auto</a>
-    <a href="Wiring Diagrams Manual [740].pdf">[740] HVAC</a>
-    <a href="Wiring Diagrams Manual [810].pdf">[810] Airbag</a>
-    <a href="Wiring Diagrams Manual [912].pdf">[912] Glass & Mirrors</a>
-    <a href="Wiring Diagrams Manual [914].pdf">[914] Security & Locks</a>
-    <a href="Wiring Diagrams Manual [918].pdf">[918] Lighting</a>
-    <a href="Wiring Diagrams Manual [919].pdf">[919] Wipers</a>
-    <a href="Wiring Diagrams Manual [920].pdf">[920] Entertainment</a>
-    <a href="Wiring Diagrams Manual [922].pdf">[922] Instrumentation</a>
+    <div class="tile-grid">
+      <a class="tile" href="Wiring Diagrams Manual [119].pdf">[119] Engine / Starting</a>
+      <a class="tile" href="Wiring Diagrams Manual [140].pdf">[140] Engine / Control</a>
+      <a class="tile" href="Wiring Diagrams Manual [318].pdf">[318] Driveline / 4WD</a>
+      <a class="tile" href="Wiring Diagrams Manual [413].pdf">[413] Brakes / ABS</a>
+      <a class="tile" href="Wiring Diagrams Manual [513].pdf">[513] Transmission / Auto</a>
+      <a class="tile" href="Wiring Diagrams Manual [740].pdf">[740] HVAC</a>
+      <a class="tile" href="Wiring Diagrams Manual [810].pdf">[810] Airbag</a>
+      <a class="tile" href="Wiring Diagrams Manual [912].pdf">[912] Glass & Mirrors</a>
+      <a class="tile" href="Wiring Diagrams Manual [914].pdf">[914] Security & Locks</a>
+      <a class="tile" href="Wiring Diagrams Manual [918].pdf">[918] Lighting</a>
+      <a class="tile" href="Wiring Diagrams Manual [919].pdf">[919] Wipers</a>
+      <a class="tile" href="Wiring Diagrams Manual [920].pdf">[920] Entertainment</a>
+      <a class="tile" href="Wiring Diagrams Manual [922].pdf">[922] Instrumentation</a>
+    </div>
 
     <h3>Reference Documents</h3>
-    <a href="Wiring Diagrams Manual [R].pdf">[R] System Index</a>
-    <a href="Wiring Diagrams Manual [P].pdf">[P] General Procedures</a>
-    <a href="Wiring Diagrams Manual [E].pdf">[E] Wiring Schematic</a>
-    <a href="Wiring Diagrams Manual [F].pdf">[F] Fuse Box</a>
-    <a href="Wiring Diagrams Manual [C].pdf">[C] Connector List</a>
-    <a href="Wiring Diagrams Manual [G].pdf">[G] Ground Points</a>
-    <a href="Wiring Diagrams Manual [D].pdf">[D] Data Link</a>
-    <a href="Wiring Diagrams Manual [AI].pdf">[AI] Wiring Index</a>
+    <div class="tile-grid">
+      <a class="tile" href="Wiring Diagrams Manual [R].pdf">[R] System Index</a>
+      <a class="tile" href="Wiring Diagrams Manual [P].pdf">[P] General Procedures</a>
+      <a class="tile" href="Wiring Diagrams Manual [E].pdf">[E] Wiring Schematic</a>
+      <a class="tile" href="Wiring Diagrams Manual [F].pdf">[F] Fuse Box</a>
+      <a class="tile" href="Wiring Diagrams Manual [C].pdf">[C] Connector List</a>
+      <a class="tile" href="Wiring Diagrams Manual [G].pdf">[G] Ground Points</a>
+      <a class="tile" href="Wiring Diagrams Manual [D].pdf">[D] Data Link</a>
+      <a class="tile" href="Wiring Diagrams Manual [AI].pdf">[AI] Wiring Index</a>
+    </div>
   </div>
 </div>
 
 <!-- SUPPLEMENTARY -->
 <div class="section">
   <h2>Supplementary Documents</h2>
-  <div class="content">
-    <a href="Section G17608en - Steering Column.pdf">Steering Column Supplement (G17608en)</a>
+  <div class="content tile-grid">
+    <a class="tile" href="Section G17608en - Steering Column.pdf">Steering Column Supplement (G17608en)</a>
   </div>
 </div>
 
