@@ -1012,152 +1012,89 @@ h1, h2, h3, h4, .font-condensed {
 </main>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  if (window.lucide) {
-    window.lucide.createIcons();
-  }
-
-  // Dark mode toggle
-  const nightToggle = document.getElementById('nightToggle');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (prefersDark) {
-    document.body.classList.add('dark');
-  }
-
-  nightToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-  });
-
-  // Accordions
-  document.querySelectorAll('.accordion-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const content = btn.parentElement.querySelector('.accordion-content');
-      const icon = btn.querySelector('.accordion-icon');
-      const isOpen = content.classList.contains('open');
-      if (isOpen) {
-        content.classList.remove('open');
-        icon.style.transform = 'rotate(0deg)';
-        btn.setAttribute('aria-expanded', 'false');
-      } else {
-        content.classList.add('open');
-        icon.style.transform = 'rotate(180deg)';
-        btn.setAttribute('aria-expanded', 'true');
-      }
-    });
-  });
-
-  // Filter chips
-  const chips = document.querySelectorAll('.filter-chip');
-  const sections = document.querySelectorAll('.section-card');
-
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      const filter = chip.getAttribute('data-filter');
-      chips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-
-      sections.forEach(sec => {
-        const cat = sec.getAttribute('data-category');
-        if (filter === 'all' || filter === cat) {
-          sec.style.display = '';
-        } else {
-          sec.style.display = 'none';
-        }
-      });
-    });
-  });
-
-  // Search
-  const searchInput = document.getElementById('quickSearch');
-  searchInput.addEventListener('input', () => {
-    const q = searchInput.value.toLowerCase();
-    const tiles = document.querySelectorAll('.manual-tile');
-    const sectionCards = document.querySelectorAll('.section-card');
-
-    tiles.forEach(tile => {
-      const text = tile.textContent.toLowerCase();
-      tile.style.display = text.includes(q) ? 'flex' : 'none';
-    });
-
-    sectionCards.forEach(sec => {
-      const visibleTile = sec.querySelector('.manual-tile[style*="display: flex"]');
-      sec.style.display = visibleTile || q === '' ? '' : 'none';
-    });
-  });
-});
-</script>
-
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 let pdfList = [];
 const pdfIndex = {};
 
 async function extractTextFromPDF(url) {
   const pdf = await pdfjsLib.getDocument(url).promise;
-  let pages = [];
+  const pages = [];
+
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const content = await page.getTextContent();
     const text = content.items.map(item => item.str).join(" ");
     pages.push({ page: i, text: text.toLowerCase() });
   }
+
   return pages;
 }
 
 async function buildIndex() {
-  document.getElementById("searchResults").innerHTML = "<div class='text-slate-400 italic'>Indexing manuals... please wait</div>";
   const response = await fetch("pdf-manifest.json");
   pdfList = await response.json();
+
   for (const pdf of pdfList) {
-    const pages = await extractTextFromPDF(pdf);
-    pdfIndex[pdf] = pages;
+    pdfIndex[pdf] = await extractTextFromPDF(pdf);
   }
-  document.getElementById("searchResults").innerHTML = "<div class='text-slate-400 italic'>Manuals indexed. Search ready.</div>";
+
   console.log("PDF index ready");
 }
 
 buildIndex();
 
-document.getElementById("quickSearch").addEventListener("input", function () {
-  const query = this.value.toLowerCase();
-  const results = [];
+document.getElementById("quickSearch").addEventListener("input", () => {
+  const query = document.getElementById("quickSearch").value.toLowerCase();
+  const grouped = {};
+
   if (query.length < 3) {
     document.getElementById("searchResults").innerHTML = "";
     return;
   }
+
   for (const [pdf, pages] of Object.entries(pdfIndex)) {
     pages.forEach(p => {
-      const pos = p.text.indexOf(query);
-      if (pos !== -1) {
-        const snippet = p.text.substring(pos - 40, pos + 80);
-        results.push({ pdf, page: p.page, snippet });
+      if (p.text.includes(query)) {
+        if (!grouped[pdf]) grouped[pdf] = [];
+        grouped[pdf].push(p.page);
       }
     });
   }
-  displayResults(results);
+
+  displayResults(grouped, query);
 });
 
-function displayResults(results) {
+function displayResults(results, query) {
   const container = document.getElementById("searchResults");
   container.innerHTML = "";
-  if (results.length === 0) {
+
+  const pdfs = Object.keys(results);
+  if (pdfs.length === 0) {
     container.innerHTML = "<div class='text-slate-400'>No matches found</div>";
     return;
   }
-  results.forEach(r => {
-    const div = document.createElement("div");
-    div.className = "p-4 rounded-lg border border-slate-700 bg-slate-800 text-slate-100";
-    const filename = r.pdf.split("/").pop();
-    div.innerHTML = `
-      <div class="font-semibold">${filename}</div>
-      <div class="text-sm opacity-80 mb-2">Page ${r.page}</div>
-      <div class="text-sm italic">...${r.snippet}...</div>
-      <a href="${r.pdf}#page=${r.page}" target="_blank" class="inline-block mt-2 text-blue-400 underline">
-        Open PDF at this page
-      </a>
+
+  pdfs.forEach(pdf => {
+    const filename = pdf.split("/").pop();
+    const pages = results[pdf];
+
+    const row = document.createElement("div");
+    row.className =
+      "flex justify-between items-center p-2 border-b border-slate-700 text-slate-200 text-sm cursor-pointer hover:bg-slate-700";
+
+    row.innerHTML = `
+      <span class="truncate max-w-[70%]">${filename} — Pages: ${pages.join(", ")}</span>
+      <span class="text-blue-400 whitespace-nowrap">Open</span>
     `;
-    container.appendChild(div);
+
+    row.addEventListener("click", () => {
+      const url = `${pdf}#page=${pages[0]}&search=${encodeURIComponent(query)}`;
+      window.open(url, "_blank");
+    });
+
+    container.appendChild(row);
   });
 }
 </script>
