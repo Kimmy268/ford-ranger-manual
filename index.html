@@ -208,6 +208,20 @@ h1, h2, h3, h4, .font-condensed {
   body {
     padding-bottom: 0;
   }
+/* UNIVERSAL ICON SYSTEM */
+.icon {
+  color: var(--ford-blue);
+  stroke: var(--ford-blue);
+}
+
+.dark .icon {
+  color: var(--ranger-orange) !important;
+  stroke: var(--ranger-orange) !important;
+}
+
+/* Optional: smooth chevron animation */
+.accordion-icon {
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 /* Brighter search text in dark mode */
 .dark .search-input {
@@ -225,8 +239,12 @@ h1, h2, h3, h4, .font-condensed {
   stroke: var(--ranger-orange) !important;
 }
 /* Header icons in dark mode */
-.dark header i,
-.dark header svg {
+.dark .section-card i,
+.dark .section-card svg {
+  color: var(--ranger-orange) !important;
+  stroke: var(--ranger-orange) !important;
+}
+  .dark .accordion-icon {
   color: var(--ranger-orange) !important;
   stroke: var(--ranger-orange) !important;
 }
@@ -267,9 +285,9 @@ h1, h2, h3, h4, .font-condensed {
 <main class="max-w-6xl mx-auto px-4 py-5">
 
   <!-- Search -->
-  <div class="card p-4 mb-5 sticky top-[72px] z-30">
+  <div class="card p-4 mb-5 sticky top-[72px] z-30 shadow-md dark:shadow-lg">
     <div class="relative">
-      <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+      <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 icon"></i>
       <input 
         id="quickSearch" 
         type="text" 
@@ -281,9 +299,13 @@ h1, h2, h3, h4, .font-condensed {
 
   <div id="searchResults" class="mt-4 space-y-3"></div>
 
+  <div id="noResults" class="hidden text-center text-sm opacity-70 mt-4">
+    No matches found.
+  </div>
+
   <!-- Service Manual Sections -->
   <h2 class="font-condensed font-bold text-xl mb-3 flex items-center gap-2">
-    <i data-lucide="book-open" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+    <i data-lucide="book-open" class="w-5 h-5 icon"></i>
     SERVICE MANUAL SECTIONS
   </h2>
 
@@ -291,11 +313,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="info" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="info" class="w-5 h-5 icon"></i>
         <span>General Information</span>
         <span class="badge">3</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -328,11 +350,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="cpu" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="cpu" class="w-5 h-5 icon"></i>
         <span>Engine</span>
         <span class="badge">3</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -364,11 +386,11 @@ h1, h2, h3, h4, .font-condensed {
 <section class="card mb-3 section-card" data-category="service">
   <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
     <div class="flex items-center gap-3">
-      <i data-lucide="wrench" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+      <i data-lucide="wrench" class="w-5 h-5 icon"></i>
       <span>Engine – WE‑C 3.0L</span>
       <span class="badge">14</span>
     </div>
-    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+    <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
   </button>
 
   <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
@@ -495,11 +517,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="git-branch" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="git-branch" class="w-5 h-5 icon"></i>
         <span>Suspension</span>
         <span class="badge">2</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -525,11 +547,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="settings" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="settings" class="w-5 h-5 icon"></i>
         <span>Driveline & Axle</span>
         <span class="badge">3</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -562,11 +584,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="disc" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="disc" class="w-5 h-5 icon"></i>
         <span>Brakes</span>
         <span class="badge">2</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -592,11 +614,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="settings-2" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="settings-2" class="w-5 h-5 icon"></i>
         <span>Transmission & Transaxle</span>
         <span class="badge">3</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -629,11 +651,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="steering-wheel" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="steering-wheel" class="w-5 h-5 icon"></i>
         <span>Steering</span>
         <span class="badge">2</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -659,11 +681,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="wind" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="wind" class="w-5 h-5 icon"></i>
         <span>HVAC</span>
         <span class="badge">2</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -689,11 +711,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="shield" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="shield" class="w-5 h-5 icon"></i>
         <span>Restraints</span>
         <span class="badge">2</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+     <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -719,11 +741,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-3 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="car" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="car" class="w-5 h-5 icon"></i>
         <span>Body & Accessories</span>
         <span class="badge">2</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -749,11 +771,11 @@ h1, h2, h3, h4, .font-condensed {
   <section class="card mb-6 section-card" data-category="service">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="list" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
+        <i data-lucide="list" class="w-5 h-5 icon"></i>
         <span>Alphabetical Index</span>
         <span class="badge">2</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-2">
@@ -777,18 +799,18 @@ h1, h2, h3, h4, .font-condensed {
 
   <!-- Wiring Manual -->
   <h2 class="font-condensed font-bold text-xl mb-3 flex items-center gap-2">
-    <i data-lucide="zap" class="w-5 h-5 text-[#E35205]"></i>
+    <i data-lucide="zap" class="w-5 h-5 icon"></i>
     WIRING DIAGRAMS
   </h2>
 
   <section class="card mb-6 section-card" data-category="wiring">
     <button class="accordion-toggle tap-target w-full p-4 flex items-center justify-between font-semibold" aria-expanded="false">
       <div class="flex items-center gap-3">
-        <i data-lucide="zap" class="w-5 h-5 text-[#E35205]"></i>
+        <i data-lucide="zap" class="w-5 h-5 icon"></i>
         <span>Wiring Diagrams Manual</span>
         <span class="badge">1 + 21</span>
       </div>
-      <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon"></i>
+      <i data-lucide="chevron-down" class="w-5 h-5 accordion-icon icon"></i>
     </button>
     <div class="accordion-content border-t border-slate-200 dark:border-slate-700">
       <div class="p-4 space-y-4">
@@ -1053,37 +1075,73 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* -----------------------------
-     SEARCH (debounced + safe logic)
-  ----------------------------- */
-  const searchInput = document.getElementById('quickSearch');
-  let searchTimeout;
+/* -----------------------------
+   SEARCH (Readable Output)
+----------------------------- */
+const searchInput = document.getElementById('quickSearch');
+const searchResults = document.getElementById('searchResults');
+const noResults = document.getElementById('noResults');
 
-  searchInput.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
+let searchTimeout;
 
-    searchTimeout = setTimeout(() => {
-      const q = searchInput.value.toLowerCase();
-      const tiles = document.querySelectorAll('.manual-tile');
-      const sectionCards = document.querySelectorAll('.section-card');
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
 
-      // Filter tiles
-      tiles.forEach(tile => {
-        const text = tile.textContent.toLowerCase();
-        tile.style.display = text.includes(q) ? 'flex' : 'none';
-      });
+  searchTimeout = setTimeout(() => {
+    const q = searchInput.value.toLowerCase().trim();
+    searchResults.innerHTML = '';
+    noResults.classList.add('hidden');
 
-      // Show/hide section cards based on visible tiles
-      sectionCards.forEach(sec => {
-        const visibleTile = Array.from(sec.querySelectorAll('.manual-tile'))
-          .some(tile => tile.style.display !== 'none');
+    if (q === '') return;
 
-        sec.style.display = visibleTile || q === '' ? '' : 'none';
-      });
-    }, 120); // smooth, responsive search
-  });
+    const tiles = document.querySelectorAll('.manual-tile');
+    let matchCount = 0;
 
+    tiles.forEach(tile => {
+      const title = tile.querySelector('.tile-title').textContent;
+      const sub = tile.querySelector('.tile-sub').textContent;
+      const href = tile.getAttribute('href');
+      const code = tile.querySelector('.tile-icon span').textContent;
+
+      const combined = (title + ' ' + sub).toLowerCase();
+
+      if (combined.includes(q)) {
+        matchCount++;
+
+        const highlightedTitle = title.replace(
+          new RegExp(q, 'gi'),
+          match => `<span class="search-highlight">${match}</span>`
+        );
+
+        const highlightedSub = sub.replace(
+          new RegExp(q, 'gi'),
+          match => `<span class="search-highlight">${match}</span>`
+        );
+
+        const result = document.createElement('div');
+        result.className = 'search-result';
+        result.innerHTML = `
+          <div class="tile-icon"><span class="font-mono text-xs">${code}</span></div>
+          <div>
+            <div class="search-result-title">${highlightedTitle}</div>
+            <div class="search-result-sub">${highlightedSub}</div>
+          </div>
+        `;
+
+        result.addEventListener('click', () => {
+          window.location.href = href;
+        });
+
+        searchResults.appendChild(result);
+      }
+    });
+
+    if (matchCount === 0) {
+      noResults.classList.remove('hidden');
+    }
+  }, 120);
 });
+
 </script>
 
 
