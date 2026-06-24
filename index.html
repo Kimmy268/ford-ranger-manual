@@ -209,6 +209,35 @@ h1, h2, h3, h4, .font-condensed {
     padding-bottom: 0;
   }
 }
+/* Brighter search text in dark mode */
+.dark .search-input {
+  color: #f8fafc; /* brighter, clean white */
+}
+
+/* Brighter placeholder */
+.dark .search-input::placeholder {
+  color: #cbd5e1; /* slate-300 equivalent */
+}
+
+/* Make the search icon match the orange accent */
+.dark [data-lucide="search"] {
+  color: var(--ranger-orange) !important;
+  stroke: var(--ranger-orange) !important;
+}
+/* Header icons in dark mode */
+.dark header i,
+.dark header svg {
+  color: var(--ranger-orange) !important;
+  stroke: var(--ranger-orange) !important;
+}
+.dark header .bg-white\/20 {
+  background-color: rgba(227, 82, 5, 0.25) !important;
+}
+.dark #nightToggle i {
+  color: var(--ranger-orange) !important;
+}
+
+  
 </style>
 </head>
 <body class="dark">
@@ -977,56 +1006,86 @@ h1, h2, h3, h4, .font-condensed {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+  /* -----------------------------
+     LUCIDE ICONS
+  ----------------------------- */
   if (window.lucide) {
     window.lucide.createIcons();
   }
 
-  // Dark mode default ON
+  /* -----------------------------
+     DARK MODE (with persistence)
+  ----------------------------- */
   const nightToggle = document.getElementById('nightToggle');
-  document.body.classList.add('dark');
 
-  // Toggle switches between dark and light
+  // Load saved theme or default to dark
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark' || savedTheme === null) {
+    document.body.classList.add('dark');
+  }
+
   nightToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
+
+    // Save preference
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+    // Re-render Lucide icons (future-proof)
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
   });
 
-  // Accordions
+  /* -----------------------------
+     ACCORDIONS
+  ----------------------------- */
   document.querySelectorAll('.accordion-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const content = btn.parentElement.querySelector('.accordion-content');
       const icon = btn.querySelector('.accordion-icon');
       const isOpen = content.classList.contains('open');
-      if (isOpen) {
-        content.classList.remove('open');
-        icon.style.transform = 'rotate(0deg)';
-        btn.setAttribute('aria-expanded', 'false');
-      } else {
-        content.classList.add('open');
-        icon.style.transform = 'rotate(180deg)';
-        btn.setAttribute('aria-expanded', 'true');
-      }
+
+      content.classList.toggle('open', !isOpen);
+      icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+      btn.setAttribute('aria-expanded', !isOpen);
     });
   });
 
-  // Search (tile filtering)
+  /* -----------------------------
+     SEARCH (debounced + safe logic)
+  ----------------------------- */
   const searchInput = document.getElementById('quickSearch');
+  let searchTimeout;
+
   searchInput.addEventListener('input', () => {
-    const q = searchInput.value.toLowerCase();
-    const tiles = document.querySelectorAll('.manual-tile');
-    const sectionCards = document.querySelectorAll('.section-card');
+    clearTimeout(searchTimeout);
 
-    tiles.forEach(tile => {
-      const text = tile.textContent.toLowerCase();
-      tile.style.display = text.includes(q) ? 'flex' : 'none';
-    });
+    searchTimeout = setTimeout(() => {
+      const q = searchInput.value.toLowerCase();
+      const tiles = document.querySelectorAll('.manual-tile');
+      const sectionCards = document.querySelectorAll('.section-card');
 
-    sectionCards.forEach(sec => {
-      const visibleTile = sec.querySelector('.manual-tile[style*="display: flex"]');
-      sec.style.display = visibleTile || q === '' ? '' : 'none';
-    });
+      // Filter tiles
+      tiles.forEach(tile => {
+        const text = tile.textContent.toLowerCase();
+        tile.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+
+      // Show/hide section cards based on visible tiles
+      sectionCards.forEach(sec => {
+        const visibleTile = Array.from(sec.querySelectorAll('.manual-tile'))
+          .some(tile => tile.style.display !== 'none');
+
+        sec.style.display = visibleTile || q === '' ? '' : 'none';
+      });
+    }, 120); // smooth, responsive search
   });
+
 });
 </script>
+
 
 <script>
 // -------------------------------
