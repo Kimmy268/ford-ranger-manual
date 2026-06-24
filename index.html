@@ -1008,8 +1008,175 @@ h1, h2, h3, h4, .font-condensed {
       </div>
     </div>
   </section>
-
 </main>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+
+  // Dark mode toggle
+  const nightToggle = document.getElementById('nightToggle');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (prefersDark) {
+    document.body.classList.add('dark');
+  }
+
+  nightToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  // Accordions
+  document.querySelectorAll('.accordion-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const content = btn.parentElement.querySelector('.accordion-content');
+      const icon = btn.querySelector('.accordion-icon');
+      const isOpen = content.classList.contains('open');
+      if (isOpen) {
+        content.classList.remove('open');
+        icon.style.transform = 'rotate(0deg)';
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        content.classList.add('open');
+        icon.style.transform = 'rotate(180deg)';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Filter chips
+  const chips = document.querySelectorAll('.filter-chip');
+  const sections = document.querySelectorAll('.section-card');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const filter = chip.getAttribute('data-filter');
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      sections.forEach(sec => {
+        const cat = sec.getAttribute('data-category');
+        if (filter === 'all' || filter === cat) {
+          sec.style.display = '';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Search
+  const searchInput = document.getElementById('quickSearch');
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase();
+    const tiles = document.querySelectorAll('.manual-tile');
+    const sectionCards = document.querySelectorAll('.section-card');
+
+    tiles.forEach(tile => {
+      const text = tile.textContent.toLowerCase();
+      tile.style.display = text.includes(q) ? 'flex' : 'none';
+    });
+
+    sectionCards.forEach(sec => {
+      const visibleTile = sec.querySelector('.manual-tile[style*="display: flex"]');
+      sec.style.display = visibleTile || q === '' ? '' : 'none';
+    });
+  });
+});
+</script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+let pdfList = [];
+const pdfIndex = {};
+
+// Extract text from a single PDF
+async function extractTextFromPDF(url) {
+  const pdf = await pdfjsLib.getDocument(url).promise;
+  const pages = [];
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const text = content.items.map(item => item.str).join(" ");
+    pages.push({ page: i, text: text.toLowerCase() });
+  }
+
+  return pages;
+}
+
+// Non‑blocking indexing (keeps UI responsive)
+async function buildIndex() {
+  const response = await fetch("pdf-manifest.json");
+  pdfList = await response.json();
+
+  pdfList.forEach(pdf => {
+    setTimeout(async () => {
+      pdfIndex[pdf] = await extractTextFromPDF(pdf);
+      console.log(`${pdf} indexed`);
+    }, 0);
+  });
+}
+
+buildIndex();
+
+// Search handler
+document.getElementById("quickSearch").addEventListener("input", () => {
+  const query = document.getElementById("quickSearch").value.toLowerCase();
+  const results = [];
+
+  if (query.length < 3) {
+    document.getElementById("searchResults").innerHTML = "";
+    return;
+  }
+
+  // Order found = natural order (Option C)
+  for (const [pdf, pages] of Object.entries(pdfIndex)) {
+    pages.forEach(p => {
+      if (p.text.includes(query)) {
+        results.push({ pdf, page: p.page });
+      }
+    });
+  }
+
+  displayResults(results);
+});
+
+// Display each occurrence on its own line
+function displayResults(results) {
+  const container = document.getElementById("searchResults");
+  container.innerHTML = "";
+
+  if (results.length === 0) {
+    container.innerHTML =
+      "<div class='text-gray-500 dark:text-gray-400'>No matches found</div>";
+    return;
+  }
+
+  results.forEach(r => {
+    const filename = r.pdf.split("/").pop();
+
+    const row = document.createElement("div");
+    row.className =
+      "flex justify-between items-center p-2 border-b border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition";
+
+    row.innerHTML = `
+      <span class="truncate max-w-[70%]">${filename} — Page ${r.page}</span>
+      <span class="text-blue-600 dark:text-blue-400 whitespace-nowrap">Open</span>
+    `;
+
+    // Entire row clickable
+    row.addEventListener("click", () => {
+      window.open(`${r.pdf}#page=${r.page}`, "_blank");
+    });
+
+    container.appendChild(row);
+  });
+}
+</script>
+
+  
 </body>
 </html>
