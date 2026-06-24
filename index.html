@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <style>
 :root {
@@ -283,7 +284,9 @@ h1, h2, h3, h4, .font-condensed {
       <button class="filter-chip" data-filter="supplementary">Supplementary</button>
     </div>
   </div>
-
+  
+<div id="searchResults" class="mt-4 space-y-3"></div>
+ 
   <!-- Service Manual Sections -->
   <h2 class="font-condensed font-bold text-xl mb-3 flex items-center gap-2">
     <i data-lucide="book-open" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
