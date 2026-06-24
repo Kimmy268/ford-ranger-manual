@@ -1017,7 +1017,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 let pdfList = [];
 const pdfIndex = {};
-
+  
 async function extractTextFromPDF(url) {
   const pdf = await pdfjsLib.getDocument(url).promise;
   const pages = [];
@@ -1032,22 +1032,25 @@ async function extractTextFromPDF(url) {
   return pages;
 }
 
+// 🧠 Non‑blocking indexing
 async function buildIndex() {
   const response = await fetch("pdf-manifest.json");
   pdfList = await response.json();
 
   for (const pdf of pdfList) {
-    pdfIndex[pdf] = await extractTextFromPDF(pdf);
+    setTimeout(async () => {
+      pdfIndex[pdf] = await extractTextFromPDF(pdf);
+      console.log(`${pdf} indexed`);
+    }, 0);
   }
-
-  console.log("PDF index ready");
 }
 
 buildIndex();
 
+// 🔍 Search handler
 document.getElementById("quickSearch").addEventListener("input", () => {
   const query = document.getElementById("quickSearch").value.toLowerCase();
-  const grouped = {};
+  const results = [];
 
   if (query.length < 3) {
     document.getElementById("searchResults").innerHTML = "";
@@ -1057,40 +1060,37 @@ document.getElementById("quickSearch").addEventListener("input", () => {
   for (const [pdf, pages] of Object.entries(pdfIndex)) {
     pages.forEach(p => {
       if (p.text.includes(query)) {
-        if (!grouped[pdf]) grouped[pdf] = [];
-        grouped[pdf].push(p.page);
+        results.push({ pdf, page: p.page });
       }
     });
   }
 
-  displayResults(grouped, query);
+  displayResults(results, query);
 });
 
+// 🧾 Display each occurrence on its own line
 function displayResults(results, query) {
   const container = document.getElementById("searchResults");
   container.innerHTML = "";
 
-  const pdfs = Object.keys(results);
-  if (pdfs.length === 0) {
-    container.innerHTML = "<div class='text-slate-400'>No matches found</div>";
+  if (results.length === 0) {
+    container.innerHTML = "<div class='text-gray-500 dark:text-gray-400'>No matches found</div>";
     return;
   }
 
-  pdfs.forEach(pdf => {
-    const filename = pdf.split("/").pop();
-    const pages = results[pdf];
-
+  results.forEach(r => {
+    const filename = r.pdf.split("/").pop();
     const row = document.createElement("div");
     row.className =
-      "flex justify-between items-center p-2 border-b border-slate-700 text-slate-200 text-sm cursor-pointer hover:bg-slate-700";
+      "flex justify-between items-center p-2 border-b border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition";
 
     row.innerHTML = `
-      <span class="truncate max-w-[70%]">${filename} — Pages: ${pages.join(", ")}</span>
-      <span class="text-blue-400 whitespace-nowrap">Open</span>
+      <span class="truncate max-w-[70%]">${filename} — Page ${r.page}</span>
+      <span class="text-blue-600 dark:text-blue-400 whitespace-nowrap">Open</span>
     `;
 
     row.addEventListener("click", () => {
-      const url = `${pdf}#page=${pages[0]}&search=${encodeURIComponent(query)}`;
+      const url = `${r.pdf}#page=${r.page}&search=${encodeURIComponent(query)}`;
       window.open(url, "_blank");
     });
 
@@ -1098,6 +1098,5 @@ function displayResults(results, query) {
   });
 }
 </script>
-
 </body>
 </html>
