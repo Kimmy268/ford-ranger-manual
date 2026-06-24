@@ -1010,7 +1010,6 @@ h1, h2, h3, h4, .font-condensed {
   </section>
 
 </main>
-
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -1018,87 +1017,71 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 let pdfList = [];
 const pdfIndex = {};
 
-// Extract text from a single PDF
 async function extractTextFromPDF(url) {
   const pdf = await pdfjsLib.getDocument(url).promise;
-  const pages = [];
-
+  let pages = [];
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const content = await page.getTextContent();
     const text = content.items.map(item => item.str).join(" ");
     pages.push({ page: i, text: text.toLowerCase() });
   }
-
   return pages;
 }
 
-// Non‑blocking indexing (keeps UI responsive)
 async function buildIndex() {
   const response = await fetch("pdf-manifest.json");
   pdfList = await response.json();
-
-  pdfList.forEach(pdf => {
-    setTimeout(async () => {
-      pdfIndex[pdf] = await extractTextFromPDF(pdf);
-      console.log(`${pdf} indexed`);
-    }, 0);
-  });
+  for (const pdf of pdfList) {
+    const pages = await extractTextFromPDF(pdf);
+    pdfIndex[pdf] = pages;
+  }
+  console.log("PDF index ready");
 }
 
 buildIndex();
 
-// Search handler
-document.getElementById("quickSearch").addEventListener("input", () => {
-  const query = document.getElementById("quickSearch").value.toLowerCase();
+document.getElementById("quickSearch").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
   const results = [];
-
   if (query.length < 3) {
     document.getElementById("searchResults").innerHTML = "";
     return;
   }
-
-  // Order found = natural order (Option C)
   for (const [pdf, pages] of Object.entries(pdfIndex)) {
     pages.forEach(p => {
-      if (p.text.includes(query)) {
-        results.push({ pdf, page: p.page });
+      const pos = p.text.indexOf(query);
+      if (pos !== -1) {
+        const snippet = p.text.substring(pos - 40, pos + 80);
+        results.push({ pdf, page: p.page, snippet });
       }
     });
   }
-
   displayResults(results);
 });
 
-// Display each occurrence on its own line
 function displayResults(results) {
   const container = document.getElementById("searchResults");
   container.innerHTML = "";
-
   if (results.length === 0) {
-    container.innerHTML =
-      "<div class='text-gray-500 dark:text-gray-400'>No matches found</div>";
+    container.innerHTML = "<div class='text-slate-400'>No matches found</div>";
     return;
   }
-
   results.forEach(r => {
+    const div = document.createElement("div");
+    div.className =
+      "p-4 rounded-lg border border-slate-700 bg-slate-800 text-slate-100";
     const filename = r.pdf.split("/").pop();
-
-    const row = document.createElement("div");
-    row.className =
-      "flex justify-between items-center p-2 border-b border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition";
-
-    row.innerHTML = `
-      <span class="truncate max-w-[70%]">${filename} — Page ${r.page}</span>
-      <span class="text-blue-600 dark:text-blue-400 whitespace-nowrap">Open</span>
+    div.innerHTML = `
+      <div class="font-semibold">${filename}</div>
+      <div class="text-sm opacity-80 mb-2">Page ${r.page}</div>
+      <div class="text-sm italic">...${r.snippet}...</div>
+      <a href="${r.pdf}#page=${r.page}" target="_blank"
+         class="inline-block mt-2 text-blue-400 underline">
+        Open PDF at this page
+      </a>
     `;
-
-    // Entire row clickable
-    row.addEventListener("click", () => {
-      window.open(`${r.pdf}#page=${r.page}`, "_blank");
-    });
-
-    container.appendChild(row);
+    container.appendChild(div);
   });
 }
 </script>
