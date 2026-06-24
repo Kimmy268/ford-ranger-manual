@@ -1086,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
- <script>
+<script>
 // -------------------------------
 //  LOAD JSON INDEX
 // -------------------------------
@@ -1151,14 +1151,10 @@ document.getElementById("quickSearch").addEventListener("input", () => {
 
   // Search through JSON index
   for (const [filename, pages] of Object.entries(pdfIndex)) {
-    let matchCount = 0;
-
     pages.forEach(p => {
       const idx = p.text.indexOf(query);
 
       if (idx !== -1 || fuzzyMatch(p.text, query)) {
-        matchCount++;
-
         // Build snippet
         const pos = idx !== -1 ? idx : p.text.indexOf(query.slice(0, 3));
         const start = Math.max(0, pos - 40);
@@ -1173,34 +1169,21 @@ document.getElementById("quickSearch").addEventListener("input", () => {
           pdf: filename,
           page: p.page,
           snippet,
-          relevance: idx !== -1 ? 2 : 1 // direct match > fuzzy match
+          relevance: idx !== -1 ? 2 : 1
         });
       }
     });
-
-    // Add grouping header if matches found
-    if (matchCount > 0) {
-      results.push({
-        header: true,
-        pdf: filename,
-        count: matchCount
-      });
-    }
   }
 
-  // Sort by relevance (headers stay at top of each group)
-  results.sort((a, b) => {
-    if (a.header) return -1;
-    if (b.header) return 1;
-    return b.relevance - a.relevance;
-  });
+  // Sort by relevance
+  results.sort((a, b) => b.relevance - a.relevance);
 
   displayResults(results);
 });
 
 
 // -------------------------------
-//  DISPLAY RESULTS
+//  DISPLAY RESULTS (NO HEADERS)
 // -------------------------------
 function displayResults(results) {
   const container = document.getElementById("searchResults");
@@ -1213,17 +1196,6 @@ function displayResults(results) {
   }
 
   results.forEach(r => {
-    // Group header
-    if (r.header) {
-      const header = document.createElement("div");
-      header.className =
-        "p-2 bg-slate-200 dark:bg-slate-800 font-bold text-sm border-b border-slate-400 dark:border-slate-700";
-      header.textContent = `${r.pdf} — ${r.count} matches`;
-      container.appendChild(header);
-      return;
-    }
-
-    // Result row
     const row = document.createElement("div");
     row.className =
       "p-3 border-b border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition";
@@ -1244,7 +1216,7 @@ function displayResults(results) {
   });
 }
 </script>
- 
+
 
   
 </body>
