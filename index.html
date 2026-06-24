@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <style>
 :root {
@@ -135,34 +134,6 @@ h1, h2, h3, h4, .font-condensed {
   box-shadow: 0 0 0 3px rgba(227, 82, 5, 0.1);
 }
 
-.filter-chip {
-  background: var(--bg-light);
-  border: 2px solid var(--border-light);
-  border-radius: 100px;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  min-height: 40px;
-  white-space: nowrap;
-}
-
-.dark .filter-chip {
-  background: var(--card-dark);
-  border-color: var(--border-dark);
-}
-
-.filter-chip.active {
-  background: var(--ford-blue);
-  border-color: var(--ford-blue);
-  color: white;
-}
-
-.dark .filter-chip.active {
-  background: var(--ranger-orange);
-  border-color: var(--ranger-orange);
-}
-
 .tile-link {
   display: flex;
   align-items: center;
@@ -240,7 +211,7 @@ h1, h2, h3, h4, .font-condensed {
 }
 </style>
 </head>
-<body>
+<body class="dark">
 
 <!-- Header -->
 <header class="section-header text-white sticky top-0 z-40 shadow-lg">
@@ -267,7 +238,7 @@ h1, h2, h3, h4, .font-condensed {
 <main class="max-w-6xl mx-auto px-4 py-5">
 
   <!-- Search -->
-  <div class="card p-4 mb-5">
+  <div class="card p-4 mb-5 sticky top-[72px] z-30">
     <div class="relative">
       <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
       <input 
@@ -277,16 +248,10 @@ h1, h2, h3, h4, .font-condensed {
         class="search-input w-full pl-10 pr-4 py-3 rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent"
       >
     </div>
-    <div class="flex gap-2 mt-3 overflow-x-auto pb-1">
-      <button class="filter-chip active" data-filter="all">All</button>
-      <button class="filter-chip" data-filter="service">Service Manual</button>
-      <button class="filter-chip" data-filter="wiring">Wiring</button>
-      <button class="filter-chip" data-filter="supplementary">Supplementary</button>
-    </div>
   </div>
-  
-<div id="searchResults" class="mt-4 space-y-3"></div>
- 
+
+  <div id="searchResults" class="mt-4 space-y-3"></div>
+
   <!-- Service Manual Sections -->
   <h2 class="font-condensed font-bold text-xl mb-3 flex items-center gap-2">
     <i data-lucide="book-open" class="w-5 h-5 text-[#003478] dark:text-[#E35205]"></i>
@@ -1016,13 +981,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
-  // Dark mode toggle
+  // Dark mode default ON
   const nightToggle = document.getElementById('nightToggle');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (prefersDark) {
-    document.body.classList.add('dark');
-  }
+  document.body.classList.add('dark');
 
+  // Toggle switches between dark and light
   nightToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
   });
@@ -1045,28 +1008,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Filter chips
-  const chips = document.querySelectorAll('.filter-chip');
-  const sections = document.querySelectorAll('.section-card');
-
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      const filter = chip.getAttribute('data-filter');
-      chips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-
-      sections.forEach(sec => {
-        const cat = sec.getAttribute('data-category');
-        if (filter === 'all' || filter === cat) {
-          sec.style.display = '';
-        } else {
-          sec.style.display = 'none';
-        }
-      });
-    });
-  });
-
-  // Search
+  // Search (tile filtering)
   const searchInput = document.getElementById('quickSearch');
   searchInput.addEventListener('input', () => {
     const q = searchInput.value.toLowerCase();
