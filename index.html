@@ -1085,44 +1085,61 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-let pdfList = [];
-const pdfIndex = {};
+ <script>
+// -------------------------------
+//  LOAD JSON INDEX
+// -------------------------------
+let pdfIndex = {};
 
-// Extract text from a single PDF
-async function extractTextFromPDF(url) {
-  const pdf = await pdfjsLib.getDocument(url).promise;
-  const pages = [];
-
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const content = await page.getTextContent();
-    const text = content.items.map(item => item.str).join(" ");
-    pages.push({ page: i, text: text.toLowerCase() });
+async function loadIndex() {
+  try {
+    const response = await fetch("pdf-index.json");
+    pdfIndex = await response.json();
+    console.log("PDF index loaded:", Object.keys(pdfIndex).length, "files");
+  } catch (err) {
+    console.error("Failed to load pdf-index.json", err);
   }
-
-  return pages;
 }
 
-// Non‑blocking indexing (keeps UI responsive)
-async function buildIndex() {
-  const response = await fetch("pdf-manifest.json");
-  pdfList = await response.json();
+loadIndex();
 
-  pdfList.forEach(pdf => {
-    setTimeout(async () => {
-      pdfIndex[pdf] = await extractTextFromPDF(pdf);
-      console.log(`${pdf} indexed`);
-    }, 0);
-  });
+
+// -------------------------------
+//  FUZZY MATCH FUNCTION (typo‑tolerant)
+// -------------------------------
+function fuzzyMatch(text, query) {
+  const maxDistance = 1; // allow 1 typo
+  const words = text.split(/\s+/);
+
+  for (const word of words) {
+    if (levenshtein(word, query) <= maxDistance) return true;
+  }
+  return false;
 }
 
-buildIndex();
+// Levenshtein distance
+function levenshtein(a, b) {
+  const matrix = Array.from({ length: a.length + 1 }, () => []);
+  for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+  for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
 
-// Search handler
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1,
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+  }
+  return matrix[a.length][b.length];
+}
+
+
+// -------------------------------
+//  SEARCH HANDLER
+// -------------------------------
 document.getElementById("quickSearch").addEventListener("input", () => {
   const query = document.getElementById("quickSearch").value.toLowerCase();
   const results = [];
@@ -1132,19 +1149,59 @@ document.getElementById("quickSearch").addEventListener("input", () => {
     return;
   }
 
-  // Order found = natural order (Option C)
-  for (const [pdf, pages] of Object.entries(pdfIndex)) {
+  // Search through JSON index
+  for (const [filename, pages] of Object.entries(pdfIndex)) {
+    let matchCount = 0;
+
     pages.forEach(p => {
-      if (p.text.includes(query)) {
-        results.push({ pdf, page: p.page });
+      const idx = p.text.indexOf(query);
+
+      if (idx !== -1 || fuzzyMatch(p.text, query)) {
+        matchCount++;
+
+        // Build snippet
+        const pos = idx !== -1 ? idx : p.text.indexOf(query.slice(0, 3));
+        const start = Math.max(0, pos - 40);
+        const end = Math.min(p.text.length, pos + query.length + 40);
+        let snippet = p.text.substring(start, end);
+
+        // Highlight matches
+        const regex = new RegExp(query, "gi");
+        snippet = snippet.replace(regex, m => `<mark>${m}</mark>`);
+
+        results.push({
+          pdf: filename,
+          page: p.page,
+          snippet,
+          relevance: idx !== -1 ? 2 : 1 // direct match > fuzzy match
+        });
       }
     });
+
+    // Add grouping header if matches found
+    if (matchCount > 0) {
+      results.push({
+        header: true,
+        pdf: filename,
+        count: matchCount
+      });
+    }
   }
+
+  // Sort by relevance (headers stay at top of each group)
+  results.sort((a, b) => {
+    if (a.header) return -1;
+    if (b.header) return 1;
+    return b.relevance - a.relevance;
+  });
 
   displayResults(results);
 });
 
-// Display each occurrence on its own line
+
+// -------------------------------
+//  DISPLAY RESULTS
+// -------------------------------
 function displayResults(results) {
   const container = document.getElementById("searchResults");
   container.innerHTML = "";
@@ -1156,18 +1213,29 @@ function displayResults(results) {
   }
 
   results.forEach(r => {
-    const filename = r.pdf.split("/").pop();
+    // Group header
+    if (r.header) {
+      const header = document.createElement("div");
+      header.className =
+        "p-2 bg-slate-200 dark:bg-slate-800 font-bold text-sm border-b border-slate-400 dark:border-slate-700";
+      header.textContent = `${r.pdf} — ${r.count} matches`;
+      container.appendChild(header);
+      return;
+    }
 
+    // Result row
     const row = document.createElement("div");
     row.className =
-      "flex justify-between items-center p-2 border-b border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition";
+      "p-3 border-b border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition";
 
     row.innerHTML = `
-      <span class="truncate max-w-[70%]">${filename} — Page ${r.page}</span>
-      <span class="text-blue-600 dark:text-blue-400 whitespace-nowrap">Open</span>
+      <div class="font-semibold mb-1">${r.pdf} — Page ${r.page}</div>
+      <div class="text-xs leading-snug text-gray-600 dark:text-gray-400">
+        ${r.snippet}...
+      </div>
+      <div class="text-blue-600 dark:text-blue-400 mt-1 text-right">Open</div>
     `;
 
-    // Entire row clickable
     row.addEventListener("click", () => {
       window.open(`${r.pdf}#page=${r.page}`, "_blank");
     });
@@ -1176,6 +1244,7 @@ function displayResults(results) {
   });
 }
 </script>
+ 
 
   
 </body>
